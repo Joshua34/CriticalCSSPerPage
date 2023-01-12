@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * @var \Magento\Theme\Block\Html\Header\CriticalCss $criticalCssViewModel
+ */
+?>
+<?php 
+$criticalCssViewModel = $block->getData('criticalCssViewModel'); 
+$pageType = $block->getData('pageType');
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$pageLayouts = $objectManager->get(\Magento\Framework\App\View::class);
+
+$pageHandle1 = $pageLayouts->getLayout()->getUpdate()->getHandles()[1];
+$pageHandle2 = $pageLayouts->getLayout()->getUpdate()->getHandles()[2];
+$pageHandle3 = $pageLayouts->getLayout()->getUpdate()->getHandles()[3];
+?>
+
+<?php if ($pageType): ?>
+    <style type="text/css" data-page="<?= $pageHandle1 . ' ' . $pageHandle2 . ' ' . $pageHandle3 ?>" data-type="criticalCss">
+        <?= $criticalCssViewModel->getCriticalCssData(); ?>
+        <?= $block->getLayout()
+        ->createBlock('Magento\Cms\Block\Block')
+        ->setBlockId($pageType . '-criticalCss')
+        ->toHtml(); ?>
+    </style>
+<?php else: ?>
+    <style type="text/css" data-page="<?= $pageHandle1 . ' ' . $pageHandle2 . ' ' . $pageHandle3 ?>" data-type="criticalCss">
+        <?= $criticalCssViewModel->getCriticalCssData(); ?>
+    </style>
+<?php endif; ?>
